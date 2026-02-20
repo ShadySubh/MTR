@@ -1,64 +1,614 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import {
+  Sun,
+  Home,
+  Building2,
+  Droplets,
+  Wrench,
+  Tractor,
+  Battery,
+  MapPin,
+  Phone,
+  Mail,
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  Leaf,
+  ArrowRight,
+  Settings,
+  Award,
+  ThumbsUp,
+  CheckCircle2,
+  IndianRupee,
+  ChevronDown,
+  HelpCircle
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
+
+function FAQItem({ question, answer }: { question: string, answer: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="border border-white/10 rounded-2xl bg-[#0a0a0a]/50 backdrop-blur-md overflow-hidden transition-colors hover:border-white/20 hover:bg-[#121212]/50 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+      >
+        <h3 className="font-display text-lg font-medium text-white pr-4">{question}</h3>
+        <div className={`shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-blue-500/20 border-blue-500/50 text-blue-400' : 'text-zinc-400'}`}>
+          <ChevronDown className="w-4 h-4" />
+        </div>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 pb-6 text-zinc-400 font-light leading-relaxed border-t border-white/5 pt-4 whitespace-pre-line">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function LandingPage() {
+  const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+  const products = [
+    { title: "Home Solar Systems", icon: <Home className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors duration-300" />, desc: "Stop paying high electricity bills with complete rooftop solar solutions for your home." },
+    { title: "Commercial Solar", icon: <Building2 className="w-8 h-8 text-emerald-400 group-hover:text-white transition-colors duration-300" />, desc: "Powerful solar panels and sturdy inverters to run your business efficiently." },
+    { title: "Solar Water Pumps", icon: <Droplets className="w-8 h-8 text-cyan-400 group-hover:text-white transition-colors duration-300" />, desc: "Reliable solar pumps for farming and easy irrigation without relying on the grid." },
+    { title: "Steel Structures", icon: <Wrench className="w-8 h-8 text-indigo-400 group-hover:text-white transition-colors duration-300" />, desc: "Strong pre-fabricated structures, sheds, and custom rooftop frames." },
+    { title: "Green & Poly Houses", icon: <Leaf className="w-8 h-8 text-green-400 group-hover:text-white transition-colors duration-300" />, desc: "Modern greenhouses to protect crops and boost your agricultural output." },
+    { title: "Irrigation Pipes", icon: <Zap className="w-8 h-8 text-blue-500 group-hover:text-white transition-colors duration-300" />, desc: "Durable plumbing and high-quality piping solutions for widespread farm irrigation." },
+    { title: "Construction Supplies", icon: <Tractor className="w-8 h-8 text-teal-400 group-hover:text-white transition-colors duration-300" />, desc: "High-quality machinery and reliable inputs for your building projects." },
+    { title: "Solar Batteries", icon: <Battery className="w-8 h-8 text-emerald-500 group-hover:text-white transition-colors duration-300" />, desc: "Individual solar panels, heavy-duty batteries, and premium inverters for custom needs." },
+  ];
+
+  const faqs = [
+    {
+      question: "Is Roof Top Solar fully free?",
+      answer: "It is not fully free but there is a very huge amount of subsidy provided by the Government of India. There is subsidy from central and state government after installation."
+    },
+    {
+      question: "How much is the Central & State Goverment Subsidy?",
+      answer: "Assam is a special category state hence central subsidy here is 10% higher than other states.\nCentral Govt Subsidy (for Assam): 1 KW – Rs 33000, 2KW – 66000, 3KW & Above – 85800.\nEvery State has additional State Subsidy which is different from state to state. Assam State Govt Subsidy: 1KW - Rs 15000, 2KW – 30000, 3KW & Above – 45000.\nTotal (Central + Assam State): 1KW - 48000, 2KW - 96000, 3KW & above - 130800."
+    },
+    {
+      question: "How to get Central Subsidy?",
+      answer: "Step 1: Register yourself in Portal (Documents needed: APDCL Consumer number, mobile number for OTP. Portal will fetch all details from consumer number.)\nStep 2: Select KW capacity (you can change later also)\nStep 3: Select Vendor (you can change later also)\nStep 4: Agreement between Vendor & Consumer on Rs 100 stamp paper.\nStep 5: If Bank Loan needed – In portal choose bank loan option. Redirected to Jan Samarth Portal for Aadhaar authentication and loan processing. Banks finance up to 90% of the Solar Plant costs.\nStep 6: No Bank Loan needed – Consumer to make payment to Vendor and Vendor will start installation process.\nStep 7: After installation, vendor to submit installation report in the portal.\nStep 8: APDCL will inspect the installation and submit commissioning report.\nStep 9: Agreement between Consumer & APDCL for Net Metering Arrangement.\nStep 10: APDCL will install net meter at consumer site.\nStep 11: Consumer will submit bank details and cancelled cheque for subsidy claim in portal.\nStep 12: Central Govt will submit Central Subsidy directly in the bank account of Consumer (15-30 days usually).\nStep 13: State Government will pay its portion directly to consumer in their bank account after Central subsidy."
+    },
+    {
+      question: "How to get State Subsidy?",
+      answer: "There is no extra document submission or paper work needed to get State Subsidy. After Central Government Subsidy payment State Government will pay on its own directly."
+    }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+  };
+
+  return (
+    <div className="relative min-h-screen bg-[#030509] text-zinc-50 font-sans selection:bg-blue-500/30 selection:text-white overflow-hidden">
+
+      {/* Immersive Solar Grid Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Base Grid Texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.2]"></div>
+
+        <motion.div
+          style={{ y }}
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px]"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <motion.div
+          style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]) }}
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[150px]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030509]/80 to-[#030509]"></div>
+      </div>
+
+      {/* Navigation Layer */}
+      <nav className="fixed top-0 z-50 w-full backdrop-blur-xl bg-[#030509]/50 border-b border-white/[0.05]">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-3 cursor-pointer group"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="relative p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300">
+              <Sun className="w-5 h-5 text-blue-400 group-hover:text-blue-300" />
+            </div>
+            <div>
+              <h1 className="font-display font-bold tracking-tight text-xl leading-none text-white transition-colors">MTR</h1>
+              <p className="text-[9px] font-medium tracking-[0.2em] text-blue-400/80 uppercase mt-1">Construction & Inputs</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="hidden md:flex items-center gap-10 font-medium text-sm text-zinc-400"
           >
-            Documentation
-          </a>
+            {['Products', 'Subsidy Details', 'Contact Us'].map((item) => (
+              <a key={item} href={item === 'Contact Us' ? '#contact' : (item === 'Subsidy Details' ? '#subsidy' : '#products')} className="relative hover:text-white transition-colors py-2 group font-display tracking-wide">
+                {item}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-500 rounded-full transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+            <Button className="relative overflow-hidden group bg-blue-600 hover:bg-transparent border border-blue-500 text-white font-medium rounded-full px-6 h-10 transition-all duration-300">
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-emerald-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+              <span className="relative z-10 flex items-center gap-2">Get Free Quote <Zap className="w-4 h-4" /></span>
+            </Button>
+          </motion.div>
         </div>
+      </nav>
+
+      {/* Main Content Space */}
+      <main className="relative z-10">
+
+        {/* Hero Section */}
+        <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 px-6 flex items-center justify-center min-h-[90vh]">
+          <div className="max-w-5xl mx-auto text-center">
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium text-xs tracking-wider mb-8 border border-emerald-500/20 backdrop-blur-md"
+            >
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-[pulse_2s_infinite]"></div>
+              Government Approved APDCL Vendor
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+              className="font-display text-5xl md:text-7xl lg:text-[6rem] font-bold tracking-tighter mb-8 leading-[1.05]"
+            >
+              Power Your Home with <br className="hidden md:block" />
+              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-200 to-white pb-2 flex items-center justify-center gap-4 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                Solar Energy
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+              className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
+            >
+              Get top-quality rooftop solar, farming equipment, and strong steel structures across North-East India. Save money on electricity and claim up to ₹1,30,000 in government subsidies today!
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-5"
+            >
+              <Button size="lg" className="group relative h-14 px-8 text-base bg-white text-black hover:bg-zinc-200 rounded-full w-full sm:w-auto font-medium transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] overflow-hidden">
+                <span className="relative z-10 flex items-center font-display tracking-wide font-bold">
+                  Claim Your ₹1.3L Subsidy
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
+              </Button>
+              <Button size="lg" variant="outline" className="group h-14 px-8 text-base rounded-full w-full sm:w-auto border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-md">
+                <span className="font-display tracking-wide">See Our Products</span>
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* PM Surya Ghar Data Ribbon */}
+        <section id="subsidy" className="py-8 border-y border-white/[0.05] bg-white/[0.01] backdrop-blur-3xl overflow-hidden relative">
+          <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#030509] to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#030509] to-transparent z-10"></div>
+
+          <div className="flex items-center gap-16 whitespace-nowrap min-w-full pl-6">
+            <motion.div
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="flex items-center gap-16"
+            >
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex items-center gap-16 text-lg font-display">
+                  <span className="flex items-center gap-3 text-zinc-400">
+                    <ShieldCheck className="text-emerald-500 w-5 h-5" /> Authorized by APDCL
+                  </span>
+                  <span className="text-white font-medium tracking-wide">✨ Get up to ₹1,30,000 Cashback</span>
+                  <span className="flex items-center gap-3 text-zinc-400">
+                    <Sun className="text-blue-500 w-5 h-5" /> Home Rooftop Solar
+                  </span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 font-bold tracking-wide">PM Surya Ghar Yojana</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* PM Surya Ghar Detailed Scheme Section */}
+        <section className="py-24 px-6 max-w-7xl mx-auto relative">
+          <div className="bg-gradient-to-br from-blue-900/20 via-[#030509] to-emerald-900/10 border border-white/10 rounded-3xl p-8 md:p-16 overflow-hidden relative group shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]">
+            {/* Inner Solar Grid Texture */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -z-10 group-hover:bg-blue-500/20 transition-all duration-700"></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none -z-10 group-hover:bg-emerald-500/20 transition-all duration-700"></div>
+
+            <div className="flex flex-col lg:flex-row items-center gap-12 relative z-10">
+              <div className="lg:w-1/2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs tracking-wider uppercase mb-6 font-display font-medium">
+                  Government of India Initiative
+                </div>
+                <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white leading-tight">
+                  A Solar Revolution is Happening in India.
+                </h2>
+                <p className="text-lg text-zinc-400 font-light leading-relaxed mb-8">
+                  The <strong className="text-white">PM Surya Ghar: Muft Bijli Yojana</strong> is a central government scheme aimed at providing free electricity to households. Say goodbye to heavy utility bills and switch to clean, green energy with massive financial support from the government.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 w-fit">
+                    <Sun className="w-6 h-6 text-yellow-500" />
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wider font-display font-semibold">Free Electricity</p>
+                      <p className="font-bold text-white text-lg font-display">Up to 300 Units</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 w-fit">
+                    <IndianRupee className="w-6 h-6 text-emerald-500" />
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wider font-display font-semibold">Max Subsidy</p>
+                      <p className="font-bold text-emerald-400 text-lg font-display">₹1,30,000</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex items-center gap-6">
+                  <div className="flex -space-x-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[#030509] object-cover bg-white pointer-events-none shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                      src="/Images/PM.jpg"
+                      alt="PM Narendra Modi"
+                      title="Hon'ble Prime Minister, Shri Narendra Modi"
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[#030509] object-cover bg-white object-[center_top] pointer-events-none shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                      src="/Images/CM.jpg"
+                      alt="CM Himanta Biswa Sarma"
+                      title="Hon'ble Chief Minister of Assam, Dr. Himanta Biswa Sarma"
+                    />
+                  </div>
+                  <div className="text-sm md:text-base text-zinc-400 font-medium tracking-wide border-l border-white/10 pl-5 py-2">
+                    Empowering Assam with <br /> Clean, Affordable Energy.
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:w-1/2 w-full">
+                <div className="bg-[#0a0a0a]/50 backdrop-blur-md rounded-2xl border border-white/10 p-6 md:p-8">
+                  <h3 className="font-display text-2xl font-bold text-white mb-6">Scheme Benefits</h3>
+                  <ul className="space-y-5">
+                    <li className="flex gap-4">
+                      <div className="mt-1 shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Massive Cost Savings</h4>
+                        <p className="text-zinc-500 text-sm font-light">Save ₹15,000 to ₹18,000 annually on electricity bills. Earn extra by selling surplus power back to the grid.</p>
+                      </div>
+                    </li>
+                    <li className="flex gap-4">
+                      <div className="mt-1 shrink-0 w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Direct Bank Transfer</h4>
+                        <p className="text-zinc-500 text-sm font-light">Get your subsidy amount credited directly into your bank account securely within 30 days of installation.</p>
+                      </div>
+                    </li>
+                    <li className="flex gap-4">
+                      <div className="mt-1 shrink-0 w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Easy Finance Options</h4>
+                        <p className="text-zinc-500 text-sm font-light">Collateral-free low-interest loans (around 7%) available through public sector banks to cover initial costs.</p>
+                      </div>
+                    </li>
+                  </ul>
+                  <div className="mt-8 pt-6 border-t border-white/10">
+                    <Button className="w-full bg-white text-black hover:bg-zinc-200 font-bold font-display tracking-wide h-12 rounded-xl transition-all">
+                      Check Your Eligibility Now
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Ecosystem Grid */}
+        <section id="products" className="py-32 px-6 max-w-7xl mx-auto relative">
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">What We Build For You</h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light">
+              From reducing your electricity bills to building strong structures, we provide reliable solutions and products for homes, farms, and businesses.
+            </p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {products.map((product, idx) => (
+              <motion.div key={idx} variants={itemVariants} className="h-full">
+                <Card className="group relative border border-white/5 bg-[#0a0a0a]/40 backdrop-blur-sm overflow-hidden hover:border-blue-500/30 transition-all duration-500 h-full cursor-pointer hover:-translate-y-2 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
+                  {/* Solar Cell Inner Texture */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                  {/* Hover Gradient Sweep */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                  <CardContent className="p-8 relative z-10 flex flex-col h-full">
+                    <div className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 transition-all duration-500 shadow-inner">
+                      {product.icon}
+                    </div>
+                    <h3 className="font-display font-semibold text-xl mb-3 text-zinc-100 group-hover:text-white transition-colors">{product.title}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed font-light mt-auto group-hover:text-zinc-300 transition-colors">
+                      {product.desc}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Why Choose Us */}
+        <section className="py-32 px-6 max-w-7xl mx-auto relative border-t border-white/[0.05]">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <h2 className="font-display text-5xl md:text-6xl font-black mb-6 tracking-tight text-white leading-tight">
+                Why Choose Us
+              </h2>
+              <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed mb-10">
+                MTR: Your North-East partner for clean, reliable, and affordable solar energy solutions.
+              </p>
+
+              <div className="space-y-8 mt-12">
+                <div className="flex gap-6 group">
+                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:border-blue-500/50 transition-all duration-300">
+                    <Settings className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2 font-display">Suitable Solutions</h3>
+                    <p className="text-zinc-400 leading-relaxed font-light">
+                      Our customized solar systems meet your specific energy needs and budget.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 group">
+                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 transition-all duration-300">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2 font-display">High-Quality Product</h3>
+                    <p className="text-zinc-400 leading-relaxed font-light">
+                      We source best products from reputable manufacturers, ensuring optimal performance and longevity.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 group">
+                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-all duration-300">
+                    <ThumbsUp className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2 font-display">Professional Installation</h3>
+                    <p className="text-zinc-400 leading-relaxed font-light">
+                      Save big with competitive rates and flexible financing options
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:w-1/2 w-full">
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(59,130,246,0.1)] group">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#030509] via-transparent to-transparent z-10 pointer-events-none"></div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/Images/why-choose-us.jpg"
+                  alt="Futuristic Solar Installation"
+                  className="w-full h-[400px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Top FAQs Section */}
+        <section className="py-32 px-6 max-w-4xl mx-auto relative border-t border-white/[0.05]">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs tracking-wider uppercase mb-6 font-display font-medium">
+              Information Center
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white leading-tight">
+              Common Questions
+            </h2>
+            <p className="text-zinc-400 text-lg font-light leading-relaxed max-w-2xl mx-auto">
+              Quick answers about subsidies, installations, and what you can expect when going solar.
+            </p>
+          </div>
+
+          <div className="space-y-4 mb-16 relative z-10">
+            {faqs.map((faq, index) => (
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
+            ))}
+          </div>
+
+          <div className="flex justify-center relative z-10">
+            <Link href="/faq">
+              <Button size="lg" className="h-14 px-8 text-base bg-white border-white/10 hover:bg-zinc-200 text-black font-bold rounded-xl transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] group overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2 font-display tracking-wide">
+                  <HelpCircle className="w-5 h-5 text-blue-600" />
+                  Still Have Questions? View Full FAQ
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform ml-1" />
+                </span>
+                <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-black/10 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        {/* Command Center Contact */}
+        <section id="contact" className="py-32 px-6 relative border-t border-white/[0.05] bg-[#030509]">
+          <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20">
+            <div className="lg:w-5/12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-300 text-xs tracking-wider uppercase mb-6 font-display">
+                Ready to Help
+              </div>
+              <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Let's Talk Today.</h2>
+              <p className="text-zinc-400 mb-12 text-lg font-light leading-relaxed">
+                Want to save on electricity or need a quote for construction? Drop us a message or give us a call, and our friendly team will guide you step by step.
+              </p>
+
+              <div className="space-y-8">
+                <div className="flex items-center gap-6 group cursor-pointer">
+                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                    <MapPin className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Our Office Location</h4>
+                    <p className="text-white font-medium">H.No. 46, Dwarka Nagar, Downtown<br />Guwahati - 06, Assam</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6 group cursor-pointer">
+                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                    <Phone className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Phone Number</h4>
+                    <p className="text-white font-medium">+91 XXXXX XXXXX</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6 group cursor-pointer">
+                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                    <Mail className="w-6 h-6 text-cyan-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Email Address</h4>
+                    <p className="text-white font-medium">contact@mtrconstruction.in</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:w-7/12 relative">
+              <div className="absolute inset-0 bg-blue-500/5 blur-3xl -z-10 rounded-full"></div>
+              <div className="bg-[#0a0a0a] backdrop-blur-2xl p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
+                {/* Subtle top glare */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                <h3 className="font-display text-2xl font-semibold text-white mb-8 relative z-10 flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)] animate-pulse"></div>
+                  Send a Message
+                </h3>
+
+                <form className="space-y-5 relative z-10" onSubmit={(e) => e.preventDefault()}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <label className="font-display text-xs font-semibold text-zinc-500 uppercase tracking-widest pl-1">Your Full Name</label>
+                      <Input
+                        placeholder="John Doe"
+                        className="bg-black/50 border-white/10 text-white placeholder:text-zinc-700 h-14 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 focus-visible:bg-blue-500/5 transition-all outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="font-display text-xs font-semibold text-zinc-500 uppercase tracking-widest pl-1">Mobile Number</label>
+                      <Input
+                        placeholder="+91 Number"
+                        className="bg-black/50 border-white/10 text-white placeholder:text-zinc-700 h-14 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 focus-visible:bg-blue-500/5 transition-all outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="font-display text-xs font-semibold text-zinc-500 uppercase tracking-widest pl-1">How can we help?</label>
+                    <Textarea
+                      placeholder="I am looking for rooftop solar..."
+                      className="bg-black/50 border-white/10 text-white placeholder:text-zinc-700 min-h-[140px] rounded-xl p-4 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 focus-visible:bg-blue-500/5 resize-none transition-all outline-none"
+                    />
+                  </div>
+                  <Button className="w-full h-14 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base mt-2 transition-all relative overflow-hidden group/btn font-display tracking-wide shadow-[0_0_20px_rgba(37,99,235,0.4)] border border-blue-400/30">
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      Request a Call Back
+                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </span>
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer className="w-full border-t border-white/[0.05] bg-[#010204]">
+          <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between text-zinc-600 text-xs md:text-sm font-light">
+            <p className="font-display tracking-wide">© {new Date().getFullYear()} MTR Construction & Inputs. All Rights Reserved.</p>
+            <div className="mt-4 md:mt-0 flex items-center gap-6">
+              <Link href="/faq" className="hover:text-white transition-colors font-display tracking-wide text-zinc-400">FAQ</Link>
+              <a href="#" className="hover:text-white transition-colors font-display tracking-wide">Privacy Policy</a>
+              <a href="#" className="hover:text-white transition-colors font-display tracking-wide">Terms of Service</a>
+              <span className="flex items-center gap-2 text-emerald-500/70 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5 font-display tracking-wide">
+                <ShieldCheck className="w-3 h-3" /> APDCL Certified Vendor
+              </span>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   );

@@ -104,7 +104,7 @@ function FAQItem({ question, answer }: { question: string, answer: string }) {
         <div className="border border-white/10 rounded-2xl bg-[#0a0a0a]/50 backdrop-blur-md overflow-hidden transition-colors hover:border-white/20 hover:bg-[#121212]/50">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none cursor-pointer"
             >
                 <h3 className="font-display text-lg font-medium text-white pr-4">{question}</h3>
                 <div className={`shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-blue-500/20 border-blue-500/50 text-blue-400' : 'text-zinc-400'}`}>
@@ -203,7 +203,7 @@ export default function FAQPage() {
                                 <span className="font-medium px-2">{phoneNumber}</span>
                                 <button
                                     onClick={handleCopy}
-                                    className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-colors ml-auto flex items-center justify-center shrink-0 w-10 h-10"
+                                    className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-colors ml-auto flex items-center justify-center shrink-0 w-10 h-10 cursor-pointer"
                                     title="Copy Phone Number"
                                 >
                                     {copied ? (

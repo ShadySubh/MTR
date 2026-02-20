@@ -39,7 +39,7 @@ function FAQItem({ question, answer }: { question: string, answer: string }) {
     <div className="border border-white/10 rounded-2xl bg-[#0a0a0a]/50 backdrop-blur-md overflow-hidden transition-colors hover:border-white/20 hover:bg-[#121212]/50 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+        className="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none cursor-pointer"
       >
         <h3 className="font-display text-lg font-medium text-white pr-4">{question}</h3>
         <div className={`shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-blue-500/20 border-blue-500/50 text-blue-400' : 'text-zinc-400'}`}>
@@ -72,14 +72,18 @@ export default function LandingPage() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   const products = [
-    { title: "Home Solar Systems", icon: <Home className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors duration-300" />, desc: "Stop paying high electricity bills with complete rooftop solar solutions for your home." },
-    { title: "Commercial Solar", icon: <Building2 className="w-8 h-8 text-emerald-400 group-hover:text-white transition-colors duration-300" />, desc: "Powerful solar panels and sturdy inverters to run your business efficiently." },
-    { title: "Solar Water Pumps", icon: <Droplets className="w-8 h-8 text-cyan-400 group-hover:text-white transition-colors duration-300" />, desc: "Reliable solar pumps for farming and easy irrigation without relying on the grid." },
-    { title: "Steel Structures", icon: <Wrench className="w-8 h-8 text-indigo-400 group-hover:text-white transition-colors duration-300" />, desc: "Strong pre-fabricated structures, sheds, and custom rooftop frames." },
-    { title: "Green & Poly Houses", icon: <Leaf className="w-8 h-8 text-green-400 group-hover:text-white transition-colors duration-300" />, desc: "Modern greenhouses to protect crops and boost your agricultural output." },
-    { title: "Irrigation Pipes", icon: <Zap className="w-8 h-8 text-blue-500 group-hover:text-white transition-colors duration-300" />, desc: "Durable plumbing and high-quality piping solutions for widespread farm irrigation." },
-    { title: "Construction Supplies", icon: <Tractor className="w-8 h-8 text-teal-400 group-hover:text-white transition-colors duration-300" />, desc: "High-quality machinery and reliable inputs for your building projects." },
-    { title: "Solar Batteries", icon: <Battery className="w-8 h-8 text-emerald-500 group-hover:text-white transition-colors duration-300" />, desc: "Individual solar panels, heavy-duty batteries, and premium inverters for custom needs." },
+    {
+      title: "Home Solar Systems",
+      icon: <Home className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors duration-300" />,
+      desc: "Stop paying high electricity bills with complete rooftop solar solutions for your home. Get massive government subsidies and reduce your carbon footprint while enjoying uninterrupted power.",
+      image: "/Images/Products/home_solar_systems.jpg"
+    },
+    {
+      title: "Commercial Solar",
+      icon: <Building2 className="w-8 h-8 text-emerald-400 group-hover:text-white transition-colors duration-300" />,
+      desc: "Powerful solar panels and sturdy inverters to run your business efficiently. Maximize your roof space to drastically cut operational costs and improve your company's green credentials.",
+      image: "/Images/Products/commercial_solar.jpg"
+    }
   ];
 
   const faqs = [
@@ -136,42 +140,47 @@ export default function LandingPage() {
       </div>
 
       {/* Navigation Layer */}
-      <nav className="fixed top-0 z-50 w-full backdrop-blur-xl bg-[#030509]/50 border-b border-white/[0.05]">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <nav className="fixed top-6 z-50 w-full flex justify-center px-6 pointer-events-none">
+        <div className="flex items-center justify-between pointer-events-auto bg-[#030509]/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] rounded-full px-4 h-16 max-w-5xl w-full">
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="relative p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300">
-              <Sun className="w-5 h-5 text-blue-400 group-hover:text-blue-300" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold tracking-tight text-xl leading-none text-white transition-colors">MTR</h1>
-              <p className="text-[9px] font-medium tracking-[0.2em] text-blue-400/80 uppercase mt-1">Construction & Inputs</p>
-            </div>
+            <Link href="/" className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-blue-500/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300">
+                <Sun className="w-5 h-5 text-blue-400 group-hover:text-blue-300" />
+              </div>
+              <div className="hidden sm:block pr-4">
+                <h1 className="font-display font-bold tracking-tight text-lg leading-none text-white transition-colors">MTR</h1>
+              </div>
+            </Link>
           </motion.div>
 
+          {/* Links */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden md:flex items-center gap-10 font-medium text-sm text-zinc-400"
+            className="hidden md:flex items-center gap-8 font-medium text-sm text-zinc-400 border-l border-r border-white/10 px-8 h-full"
           >
             {['Products', 'Subsidy Details', 'Contact Us'].map((item) => (
-              <a key={item} href={item === 'Contact Us' ? '#contact' : (item === 'Subsidy Details' ? '#subsidy' : '#products')} className="relative hover:text-white transition-colors py-2 group font-display tracking-wide">
+              <Link key={item} href={item === 'Contact Us' ? '/contact' : (item === 'Subsidy Details' ? '/#subsidy' : '/products')} className="relative hover:text-white transition-colors py-2 group font-display tracking-wide flex items-center h-full">
                 {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-500 rounded-full transition-all duration-300 group-hover:w-full"></span>
-              </a>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-500 rounded-t-full transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
+              </Link>
             ))}
           </motion.div>
 
+          {/* CTA */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <Button className="relative overflow-hidden group bg-blue-600 hover:bg-transparent border border-blue-500 text-white font-medium rounded-full px-6 h-10 transition-all duration-300">
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-emerald-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
-              <span className="relative z-10 flex items-center gap-2">Get Free Quote <Zap className="w-4 h-4" /></span>
-            </Button>
+            <Link href="/contact">
+              <Button className="relative overflow-hidden group bg-blue-600 hover:bg-blue-500 border border-blue-500/50 text-white font-medium rounded-full px-6 h-10 transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                <span className="relative z-10 flex items-center gap-2">Get Free Quote <Zap className="w-4 h-4" /></span>
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </nav>
@@ -220,16 +229,20 @@ export default function LandingPage() {
               transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
               className="flex flex-col sm:flex-row items-center justify-center gap-5"
             >
-              <Button size="lg" className="group relative h-14 px-8 text-base bg-white text-black hover:bg-zinc-200 rounded-full w-full sm:w-auto font-medium transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] overflow-hidden">
-                <span className="relative z-10 flex items-center font-display tracking-wide font-bold">
-                  Claim Your ₹1.3L Subsidy
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </span>
-                <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
-              </Button>
-              <Button size="lg" variant="outline" className="group h-14 px-8 text-base rounded-full w-full sm:w-auto border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-md">
-                <span className="font-display tracking-wide">See Our Products</span>
-              </Button>
+              <Link href="/contact" className="w-full sm:w-auto">
+                <Button size="lg" className="group relative h-14 px-8 text-base bg-white text-black hover:bg-zinc-200 rounded-full w-full sm:w-auto font-medium transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] overflow-hidden">
+                  <span className="relative z-10 flex items-center font-display tracking-wide font-bold">
+                    Claim Your ₹1.3L Subsidy
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                </Button>
+              </Link>
+              <Link href="/products" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="group h-14 px-8 text-base rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-md w-full">
+                  <span className="font-display tracking-wide">See Our Products</span>
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>
@@ -354,9 +367,11 @@ export default function LandingPage() {
                     </li>
                   </ul>
                   <div className="mt-8 pt-6 border-t border-white/10">
-                    <Button className="w-full bg-white text-black hover:bg-zinc-200 font-bold font-display tracking-wide h-12 rounded-xl transition-all">
-                      Check Your Eligibility Now
-                    </Button>
+                    <Link href="/contact" className="block w-full">
+                      <Button className="w-full bg-white text-black hover:bg-zinc-200 font-bold font-display tracking-wide h-12 rounded-xl transition-all">
+                        Check Your Eligibility Now
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -378,30 +393,65 @@ export default function LandingPage() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="flex flex-col gap-12"
           >
             {products.map((product, idx) => (
-              <motion.div key={idx} variants={itemVariants} className="h-full">
-                <Card className="group relative border border-white/5 bg-[#0a0a0a]/40 backdrop-blur-sm overflow-hidden hover:border-blue-500/30 transition-all duration-500 h-full cursor-pointer hover:-translate-y-2 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
-                  {/* Solar Cell Inner Texture */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <motion.div key={idx} variants={itemVariants} className="w-full">
+                <Link href="/products" className="block w-full">
+                  <div className={`group relative border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-2xl rounded-3xl overflow-hidden hover:border-blue-500/40 hover:bg-[#0f121a]/80 transition-all duration-700 cursor-pointer shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex flex-col md:flex-row min-h-[400px] ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
 
-                  {/* Hover Gradient Sweep */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-                  <CardContent className="p-8 relative z-10 flex flex-col h-full">
-                    <div className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 transition-all duration-500 shadow-inner">
-                      {product.icon}
+                    {/* Image Section */}
+                    <div className={`md:w-5/12 relative overflow-hidden shrink-0 border-b md:border-b-0 border-white/10 ${idx % 2 === 1 ? 'md:border-l' : 'md:border-r'}`}>
+                      <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 mix-blend-overlay"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80 z-10 md:hidden"></div>
+                      <div className={`absolute inset-0 bg-gradient-to-r ${idx % 2 === 1 ? 'from-[#0a0a0a]/80' : 'from-transparent to-[#0a0a0a]/80'} via-transparent opacity-60 z-10 hidden md:block`}></div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full min-h-[300px] object-cover transition-transform duration-1000 group-hover:scale-110"
+                      />
                     </div>
-                    <h3 className="font-display font-semibold text-xl mb-3 text-zinc-100 group-hover:text-white transition-colors">{product.title}</h3>
-                    <p className="text-zinc-500 text-sm leading-relaxed font-light mt-auto group-hover:text-zinc-300 transition-colors">
-                      {product.desc}
-                    </p>
-                  </CardContent>
-                </Card>
+
+                    {/* Content Section */}
+                    <div className="p-8 md:p-14 relative z-10 flex flex-col justify-center flex-grow">
+                      {/* Subtle Inner Grid Overlay */}
+                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                      {/* Hover Deep Space Sweep */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-500 shadow-inner inline-flex transform -rotate-3 group-hover:rotate-0">
+                          {product.icon}
+                        </div>
+                        <h3 className="font-display font-bold text-3xl md:text-5xl mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-blue-200 transition-all duration-500 tracking-tight">{product.title}</h3>
+                        <p className="text-zinc-400 text-lg md:text-xl leading-relaxed font-light mt-4 group-hover:text-zinc-300 transition-colors max-w-2xl">
+                          {product.desc}
+                        </p>
+                        <div className="mt-10 flex items-center">
+                          <span className="inline-flex items-center gap-2 text-white font-medium group-hover:text-blue-400 transition-colors bg-white/5 group-hover:bg-blue-500/10 px-6 py-3 rounded-full border border-white/10 group-hover:border-blue-500/30 text-sm tracking-wide">
+                            Explore Solution <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
+
+          <div className="mt-16 flex justify-center w-full relative z-10">
+            <Link href="/products">
+              <Button className="h-14 px-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 text-white font-medium transition-all group shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+                <span className="relative z-10 flex items-center font-display tracking-wide gap-3">
+                  Explore All Products
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Button>
+            </Link>
+          </div>
         </section>
 
         {/* Why Choose Us */}
@@ -596,16 +646,86 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <footer className="w-full border-t border-white/[0.05] bg-[#010204]">
-          <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between text-zinc-600 text-xs md:text-sm font-light">
-            <p className="font-display tracking-wide">© {new Date().getFullYear()} MTR Construction & Inputs. All Rights Reserved.</p>
-            <div className="mt-4 md:mt-0 flex items-center gap-6">
-              <Link href="/faq" className="hover:text-white transition-colors font-display tracking-wide text-zinc-400">FAQ</Link>
-              <a href="#" className="hover:text-white transition-colors font-display tracking-wide">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors font-display tracking-wide">Terms of Service</a>
-              <span className="flex items-center gap-2 text-emerald-500/70 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5 font-display tracking-wide">
-                <ShieldCheck className="w-3 h-3" /> APDCL Certified Vendor
-              </span>
+        <footer className="w-full border-t border-white/[0.05] bg-[#010204] pt-20 pb-10">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 text-sm">
+              <div className="lg:col-span-2">
+                <Link href="/" className="inline-flex items-center gap-3 mb-6">
+                  <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                    <Sun className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h2 className="font-display font-bold tracking-tight text-xl leading-none text-white">MTR</h2>
+                    <p className="text-[9px] font-medium tracking-[0.2em] text-blue-400/80 uppercase mt-1">Construction & Inputs</p>
+                  </div>
+                </Link>
+                <p className="text-zinc-400 leading-relaxed font-light pr-10 max-w-sm mb-8">
+                  Leading provider of high-efficiency rooftop solar, farming equipment, and heavy-duty steel structures across North-East India.
+                </p>
+                <div className="flex items-center gap-2 text-emerald-500/70 border border-emerald-500/20 px-3 py-1.5 rounded-full bg-emerald-500/5 font-display tracking-wide w-fit text-xs">
+                  <ShieldCheck className="w-4 h-4" /> APDCL Certified Vendor
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-display text-white font-semibold tracking-wide mb-6">Company</h4>
+                <ul className="space-y-4">
+                  <li><Link href="/#why-choose-us" className="text-zinc-400 hover:text-white transition-colors font-light">Why Choose Us</Link></li>
+                  <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors font-light">Contact Us</Link></li>
+                  <li><Link href="/#subsidy" className="text-zinc-400 hover:text-white transition-colors font-light">Subsidy Details</Link></li>
+                  <li><Link href="/faq" className="text-zinc-400 hover:text-white transition-colors font-light">FAQ</Link></li>
+                  <li><Link href="/privacy-policy" className="text-zinc-400 hover:text-white transition-colors font-light">Privacy Policy</Link></li>
+                  <li><Link href="/terms-of-service" className="text-zinc-400 hover:text-white transition-colors font-light">Terms of Service</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-display text-white font-semibold tracking-wide mb-6">Our Products</h4>
+                <ul className="space-y-4">
+                  <li><Link href="/products" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">All Products <ArrowRight className="w-3 h-3 inline-block ml-1" /></Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Home Solar Systems</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Commercial Solar</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Solar Water Pumps</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Green & Poly Houses</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Irrigation Pipes</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Construction Supplies</Link></li>
+                  <li><Link href="/products" className="text-zinc-400 hover:text-white transition-colors font-light">Solar Batteries</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Copyright Info - Moved Above BIGBOLD text */}
+            <div className="text-center mb-8">
+              <p className="font-display tracking-wide text-zinc-600 text-xs md:text-sm font-light">
+                © 2026 MTR Construction & Inputs. All Rights Reserved.
+              </p>
+            </div>
+
+            {/* BIG BOLD TYPOGRAPHY */}
+            <div className="w-full border-t border-b border-white/10 py-10 md:py-16 mb-10 flex justify-center items-center overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-900/10 to-transparent pointer-events-none"></div>
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] font-display font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white/90 to-white/10 text-center leading-[0.9] select-none break-words">
+                MTR CONSTRUCTION <br />
+                AND INPUTS
+              </h1>
+            </div>
+
+            {/* Author Badge Centered Below */}
+            <div className="flex justify-center mt-10 pb-4">
+              <a
+                href="https://shibucodes.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-row items-center justify-center gap-4 transition-transform hover:-translate-y-1"
+              >
+                <div className="w-10 h-10 rounded-[10px] overflow-hidden border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.5)] transform rotate-6 group-hover:rotate-12 transition-all duration-300 relative group-hover:border-blue-500/50 shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/Images/pfp.png" alt="Subhasish" className="w-full h-full object-cover" />
+                </div>
+                <span className="font-display font-medium text-zinc-300 tracking-wide text-sm group-hover:text-white transition-colors">
+                  Built with ❤️ by Subhasish
+                </span>
+              </a>
             </div>
           </div>
         </footer>

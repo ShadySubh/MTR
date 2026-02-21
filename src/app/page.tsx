@@ -126,123 +126,186 @@ export default function LandingPage() {
       {/* Immersive Solar Grid Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {/* Base Grid Texture */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.2]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] opacity-[0.25]"></div>
 
         <motion.div
           style={{ y }}
-          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px]"
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/15 rounded-full blur-[120px]"
         />
         <motion.div
           style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]) }}
-          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[150px]"
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-600/15 rounded-full blur-[120px]"
         />
+        {/* Central Solar Glow for Hero */}
+        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-500/10 rounded-full blur-[150px] mix-blend-screen pointer-events-none"></div>
+
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030509]/80 to-[#030509]"></div>
       </div>
 
       {/* Navigation Layer */}
-      <nav className="fixed top-6 z-50 w-full flex justify-center px-6 pointer-events-none">
-        <div className="flex items-center justify-between pointer-events-auto bg-[#030509]/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] rounded-full px-4 h-16 max-w-5xl w-full">
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-6 z-50 w-full flex justify-center px-6 pointer-events-none"
+      >
+        <div className="flex items-center justify-between pointer-events-auto bg-[#030509]/40 backdrop-blur-2xl border border-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset,0_8px_32px_rgba(0,0,0,0.6)] rounded-full px-4 h-16 max-w-5xl w-full relative">
+
+          {/* Subtle top glare */}
+          <div className="absolute top-0 inset-x-0 h-px w-1/3 mx-auto bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="flex items-center">
             <Link href="/" className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-blue-500/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300">
-                <Sun className="w-5 h-5 text-blue-400 group-hover:text-blue-300" />
+              <div className="relative p-2 rounded-full bg-white/[0.03] border border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500 shadow-inner">
+                <Sun className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transform group-hover:rotate-45 transition-transform duration-500" />
               </div>
               <div className="hidden sm:block pr-4">
-                <h1 className="font-display font-bold tracking-tight text-lg leading-none text-white transition-colors">MTR</h1>
+                <h1 className="font-display font-bold tracking-tight text-lg leading-none text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-blue-200 transition-all duration-300">MTR</h1>
               </div>
             </Link>
-          </motion.div>
+          </div>
 
           {/* Links */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden md:flex items-center gap-8 font-medium text-sm text-zinc-400 border-l border-r border-white/10 px-8 h-full"
-          >
-            {['Products', 'Subsidy Details', 'Contact Us'].map((item) => (
-              <Link key={item} href={item === 'Contact Us' ? '/contact' : (item === 'Subsidy Details' ? '/#subsidy' : '/products')} className="relative hover:text-white transition-colors py-2 group font-display tracking-wide flex items-center h-full">
-                {item}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-500 rounded-t-full transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
-              </Link>
-            ))}
-          </motion.div>
+          <div className="hidden md:flex items-center justify-center font-medium text-sm text-zinc-400 border-x border-white/5 h-full flex-grow mx-8">
+            <div className="flex gap-8 h-full">
+              {['Products', 'Subsidy Details', 'Contact Us'].map((item) => (
+                <Link key={item} href={item === 'Contact Us' ? '/contact' : (item === 'Subsidy Details' ? '/#subsidy' : '/products')} className="relative hover:text-white transition-colors py-2 group font-display tracking-wide flex items-center h-full">
+                  <span className="relative z-10">{item}</span>
+                  <span className="absolute bottom-[-1px] left-0 w-0 h-[2px] bg-gradient-to-r from-blue-400 to-emerald-400 rounded-t-full transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                  <div className="absolute inset-x-0 bottom-0 h-[20px] bg-gradient-to-t from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           {/* CTA */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <Link href="/contact">
-              <Button className="relative overflow-hidden group bg-blue-600 hover:bg-blue-500 border border-blue-500/50 text-white font-medium rounded-full px-6 h-10 transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
-                <span className="relative z-10 flex items-center gap-2">Get Free Quote <Zap className="w-4 h-4" /></span>
-              </Button>
+          <div className="flex items-center">
+            <Link href="/contact" className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+              <button className="relative flex items-center justify-center bg-[#0a0a0a] hover:bg-white text-white hover:text-black border border-white/10 hover:border-transparent rounded-full px-6 h-10 transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]">
+                <span className="flex items-center gap-2 text-sm tracking-wide font-display font-bold">
+                  Get Free Quote <Zap className="w-3.5 h-3.5" />
+                </span>
+              </button>
             </Link>
-          </motion.div>
+          </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Main Content Space */}
       <main className="relative z-10">
 
         {/* Hero Section */}
-        <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 px-6 flex items-center justify-center min-h-[90vh]">
-          <div className="max-w-5xl mx-auto text-center">
+        <section className="relative pt-40 pb-20 md:pt-48 md:pb-32 px-6 flex items-center justify-center min-h-[100vh]">
+          {/* Subtle Ambient Glows specific to Hero */}
+          <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
+          <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
 
+          <div className="max-w-6xl mx-auto text-center relative z-10 w-full mb-10">
+            {/* Animated Floating Tag */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium text-xs tracking-wider mb-8 border border-emerald-500/20 backdrop-blur-md"
+              initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-xl mb-12 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset,0_8px_32px_rgba(0,0,0,0.4)] group hover:bg-white/[0.05] hover:border-white/20 transition-all duration-500 cursor-default"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-[pulse_2s_infinite]"></div>
-              Government Approved APDCL Vendor
+              <div className="relative flex items-center justify-center">
+                <div className="absolute inset-0 bg-emerald-500 rounded-full blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 relative z-10"></div>
+              </div>
+              <span className="text-zinc-300 font-medium text-sm tracking-wide group-hover:text-white transition-colors duration-300">
+                Government Approved APDCL Vendor
+              </span>
+              <div className="w-px h-4 bg-white/20 mx-1 border-r border-transparent"></div>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 font-bold text-sm tracking-wide flex items-center gap-1.5">
+                Save up to 90%
+              </span>
             </motion.div>
 
+            {/* Main Headline */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-              className="font-display text-5xl md:text-7xl lg:text-[6rem] font-bold tracking-tighter mb-8 leading-[1.05]"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display text-5xl sm:text-7xl lg:text-[7.5rem] font-bold tracking-tighter leading-[1.05] text-white"
             >
-              Power Your Home with <br className="hidden md:block" />
-              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-200 to-white pb-2 flex items-center justify-center gap-4 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                Solar Energy
+              Power Your Future <br className="hidden sm:block" />
+              <span className="relative inline-block mt-3">
+                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-100 via-white to-white px-2">
+                  With Solar Energy
+                </span>
+                {/* Glowing text effect */}
+                <span className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 blur-2xl opacity-50 mix-blend-screen pointer-events-none">
+                  With Solar Energy
+                </span>
               </span>
             </motion.h1>
 
+            {/* Subheadline */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
+              transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-lg md:text-2xl text-zinc-400/90 mb-14 max-w-3xl mx-auto leading-relaxed font-light mt-8"
             >
-              Get top-quality rooftop solar, farming equipment, and strong steel structures across North-East India. Save money on electricity and claim up to ₹1,30,000 in government subsidies today!
+              Top-tier rooftop solar solutions across North-East India.
+              Eliminate power bills and claim up to <span className="text-white font-medium border-b border-emerald-500/30 pb-0.5">₹1,30,000</span> in subsidies.
             </motion.p>
 
+            {/* Action Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-5"
+              transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              <Link href="/contact" className="w-full sm:w-auto">
-                <Button size="lg" className="group relative h-14 px-8 text-base bg-white text-black hover:bg-zinc-200 rounded-full w-full sm:w-auto font-medium transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] overflow-hidden">
-                  <span className="relative z-10 flex items-center font-display tracking-wide font-bold">
-                    Claim Your ₹1.3L Subsidy
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"></span>
-                </Button>
+              <Link href="/contact" className="w-full sm:w-auto relative group">
+                <div className="absolute -inset-1 sm:-inset-1.5 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+                <button className="relative flex items-center justify-center h-14 md:h-16 px-10 text-base md:text-lg bg-white hover:bg-zinc-100 text-black rounded-full w-full sm:w-auto font-bold transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,1)_inset]">
+                  Claim Your ₹1.3L Subsidy
+                  <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1.5 transition-transform duration-300" />
+                </button>
               </Link>
-              <Link href="/products" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="group h-14 px-8 text-base rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-md w-full">
-                  <span className="font-display tracking-wide">See Our Products</span>
-                </Button>
+
+              <Link href="/products" className="w-full sm:w-auto group">
+                <button className="flex items-center justify-center h-14 md:h-16 px-10 text-base md:text-lg rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white w-full sm:w-auto transition-all duration-300 font-medium backdrop-blur-md">
+                  Explore Products
+                </button>
               </Link>
+            </motion.div>
+
+            {/* Decorative Solar Dashboard Element */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-20 md:mt-28 relative max-w-5xl mx-auto w-full"
+            >
+              <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+              <div className="relative rounded-2xl md:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] flex justify-center">
+
+                {/* Internal Glow */}
+                <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[60%] h-[200px] bg-blue-500/20 blur-[80px] rounded-full pointer-events-none mix-blend-screen"></div>
+
+                {/* Stats grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full relative z-10">
+                  {[
+                    { label: "Government Subsidy", value: "Up to ₹1.3L", icon: <IndianRupee className="w-5 h-5 text-emerald-400 mb-2" /> },
+                    { label: "ROI", value: "2-3 Years", icon: <Zap className="w-5 h-5 text-blue-400 mb-2" /> },
+                    { label: "Panel Warranty", value: "25+ Years", icon: <ShieldCheck className="w-5 h-5 text-indigo-400 mb-2" /> },
+                    { label: "Electricity Savings", value: "Up to 100%", icon: <Leaf className="w-5 h-5 text-green-400 mb-2" /> }
+                  ].map((stat, i) => (
+                    <div key={i} className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.05] hover:border-white/[0.1] hover:shadow-[0_0_30px_rgba(255,255,255,0.03)] transition-all duration-500 cursor-default group relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                      {stat.icon}
+                      <span className="text-zinc-400 text-[10px] md:text-xs font-medium uppercase tracking-widest mb-3 text-center group-hover:text-zinc-300 transition-colors">{stat.label}</span>
+                      <span className="text-white font-bold text-xl md:text-3xl tracking-tight">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -572,8 +635,18 @@ export default function LandingPage() {
                     <MapPin className="w-6 h-6 text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Our Office Location</h4>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Headquarters</h4>
                     <p className="text-white font-medium">H.No. 46, Dwarka Nagar, Downtown<br />Guwahati - 06, Assam</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6 group cursor-pointer">
+                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                    <MapPin className="w-6 h-6 text-cyan-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Arak Valley Office</h4>
+                    <p className="text-white font-medium">SARAPUR, NEAR GAS AGENCY<br />BHANGA BAZAR, SRIBHUMI</p>
                   </div>
                 </div>
 
@@ -582,18 +655,8 @@ export default function LandingPage() {
                     <Phone className="w-6 h-6 text-emerald-400" />
                   </div>
                   <div>
-                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Phone Number</h4>
-                    <p className="text-white font-medium">+91 XXXXX XXXXX</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-6 group cursor-pointer">
-                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
-                    <Mail className="w-6 h-6 text-cyan-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Email Address</h4>
-                    <p className="text-white font-medium">contact@mtrconstruction.in</p>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Phone Numbers</h4>
+                    <p className="text-white font-medium">+91 8135971360 <br /> +91 6003195639</p>
                   </div>
                 </div>
               </div>

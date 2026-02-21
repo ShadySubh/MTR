@@ -133,10 +133,10 @@ function FAQItem({ question, answer }: { question: string, answer: string }) {
 
 export default function FAQPage() {
     const [copied, setCopied] = useState(false);
-    const phoneNumber = "+918135971360";
+    const phoneNumber = "+91 8135971360 / +91 6003195639";
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(phoneNumber);
+        navigator.clipboard.writeText("+918135971360, +916003195639");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };

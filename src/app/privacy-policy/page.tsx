@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
                     <section className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-sm">
                         <h2 className="font-display text-2xl text-white font-semibold mb-4">5. Contact Us</h2>
                         <p>
-                            If there are any questions regarding this privacy policy, you may contact us using the information on our contact page or at <strong className="text-white">contact@mtrconstruction.in</strong>.
+                            If there are any questions regarding this privacy policy, you may contact us using the information on our contact page or by calling us at <strong className="text-white">+91 8135971360</strong> or <strong className="text-white">+91 6003195639</strong>.
                         </p>
                     </section>
 

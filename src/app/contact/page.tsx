@@ -2,11 +2,40 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Phone, Mail, ChevronRight } from "lucide-react";
+import { ArrowLeft, MapPin, Phone, Mail, ChevronRight, Copy, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
+
+function CopyablePhone({ number }: { number: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigator.clipboard.writeText(number);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <span className="inline-flex items-center gap-2 group/phone">
+            {number}
+            <button
+                onClick={handleCopy}
+                className="p-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/5 transition-colors opacity-0 group-hover/phone:opacity-100 cursor-pointer"
+                title="Copy Phone Number"
+            >
+                {copied ? (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 animate-in spin-in-180" />
+                ) : (
+                    <Copy className="w-3.5 h-3.5 text-zinc-400" />
+                )}
+            </button>
+        </span>
+    );
+}
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
@@ -77,7 +106,7 @@ export default function ContactPage() {
                                     <MapPin className="w-6 h-6 text-cyan-400" />
                                 </div>
                                 <div>
-                                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Arak Valley Office</h4>
+                                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Barak Valley Office</h4>
                                     <p className="text-white font-medium text-lg">SARAPUR, NEAR GAS AGENCY<br />BHANGA BAZAR, SRIBHUMI</p>
                                 </div>
                             </div>
@@ -88,7 +117,10 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Phone Numbers</h4>
-                                    <p className="text-white font-medium text-lg">+91 8135971360<br />+91 6003195639</p>
+                                    <p className="text-white font-medium text-lg leading-loose">
+                                        <CopyablePhone number="+91 8135971360" /><br />
+                                        <CopyablePhone number="+91 6003195639" />
+                                    </p>
                                 </div>
                             </div>
                         </div>

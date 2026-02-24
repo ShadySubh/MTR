@@ -24,13 +24,43 @@ import {
   CheckCircle2,
   IndianRupee,
   ChevronDown,
-  HelpCircle
+  HelpCircle,
+  Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
+
+function CopyablePhone({ number }: { number: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(number);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <span className="inline-flex items-center gap-2 group/phone">
+      {number}
+      <button
+        onClick={handleCopy}
+        className="p-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/5 transition-colors opacity-0 group-hover/phone:opacity-100 cursor-pointer"
+        title="Copy Phone Number"
+      >
+        {copied ? (
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 animate-in spin-in-180" />
+        ) : (
+          <Copy className="w-3.5 h-3.5 text-zinc-400" />
+        )}
+      </button>
+    </span>
+  );
+}
 
 function FAQItem({ question, answer }: { question: string, answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -443,13 +473,22 @@ export default function LandingPage() {
         </section>
 
         {/* Ecosystem Grid */}
-        <section id="products" className="py-32 px-6 max-w-7xl mx-auto relative">
-          <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">What We Build For You</h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light">
-              From reducing your electricity bills to building strong structures, we provide reliable solutions and products for homes, farms, and businesses.
+        <section id="products" className="py-32 px-6 max-w-7xl mx-auto relative relative">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center mb-20"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs tracking-wider uppercase mb-6 font-display font-medium">
+              Our Products
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">What We <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-white to-emerald-300">Build For You</span></h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed">
+              From reducing your electricity bills to building strong structures, we provide reliable premium solutions for homes, farms, and businesses.
             </p>
-          </div>
+          </motion.div>
 
           <motion.div
             variants={containerVariants}
@@ -461,31 +500,28 @@ export default function LandingPage() {
             {products.map((product, idx) => (
               <motion.div key={idx} variants={itemVariants} className="w-full">
                 <Link href="/products" className="block w-full">
-                  <div className={`group relative border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-2xl rounded-3xl overflow-hidden hover:border-blue-500/40 hover:bg-[#0f121a]/80 transition-all duration-700 cursor-pointer shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex flex-col md:flex-row min-h-[400px] ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
+                  <div className={`group relative border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent backdrop-blur-xl rounded-3xl overflow-hidden hover:border-blue-500/30 hover:bg-white/[0.05] transition-all duration-700 cursor-pointer shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset,0_20px_40px_rgba(0,0,0,0.4)] flex flex-col md:flex-row min-h-[400px] ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
 
                     {/* Image Section */}
-                    <div className={`md:w-5/12 relative overflow-hidden shrink-0 border-b md:border-b-0 border-white/10 ${idx % 2 === 1 ? 'md:border-l' : 'md:border-r'}`}>
-                      <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 mix-blend-overlay"></div>
+                    <div className={`md:w-5/12 relative overflow-hidden shrink-0 border-b md:border-b-0 border-white/10 ${idx % 2 === 1 ? 'md:border-l' : 'md:border-r'} bg-black/50 z-10`}>
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none mix-blend-screen"></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80 z-10 md:hidden"></div>
                       <div className={`absolute inset-0 bg-gradient-to-r ${idx % 2 === 1 ? 'from-[#0a0a0a]/80' : 'from-transparent to-[#0a0a0a]/80'} via-transparent opacity-60 z-10 hidden md:block`}></div>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={product.image}
                         alt={product.title}
-                        className="w-full h-full min-h-[300px] object-cover transition-transform duration-1000 group-hover:scale-110"
+                        className="w-full h-full min-h-[300px] object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                       />
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-8 md:p-14 relative z-10 flex flex-col justify-center flex-grow">
-                      {/* Subtle Inner Grid Overlay */}
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
-
+                    <div className="p-8 md:p-14 relative z-20 flex flex-col justify-center flex-grow">
                       {/* Hover Deep Space Sweep */}
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
                       <div className="relative z-10">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-500 shadow-inner inline-flex transform -rotate-3 group-hover:rotate-0">
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500 shadow-inner inline-flex transform -rotate-3 group-hover:rotate-0">
                           {product.icon}
                         </div>
                         <h3 className="font-display font-bold text-3xl md:text-5xl mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-blue-200 transition-all duration-500 tracking-tight">{product.title}</h3>
@@ -493,7 +529,7 @@ export default function LandingPage() {
                           {product.desc}
                         </p>
                         <div className="mt-10 flex items-center">
-                          <span className="inline-flex items-center gap-2 text-white font-medium group-hover:text-blue-400 transition-colors bg-white/5 group-hover:bg-blue-500/10 px-6 py-3 rounded-full border border-white/10 group-hover:border-blue-500/30 text-sm tracking-wide">
+                          <span className="inline-flex items-center gap-2 text-white font-medium group-hover:text-blue-400 transition-colors bg-white/5 group-hover:bg-blue-500/10 px-6 py-3 rounded-full border border-white/10 group-hover:border-blue-500/30 text-sm tracking-wide shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
                             Explore Solution <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                           </span>
                         </div>
@@ -505,79 +541,86 @@ export default function LandingPage() {
             ))}
           </motion.div>
 
-          <div className="mt-16 flex justify-center w-full relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-16 flex justify-center w-full relative z-10"
+          >
             <Link href="/products">
-              <Button className="h-14 px-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 text-white font-medium transition-all group shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-                <span className="relative z-10 flex items-center font-display tracking-wide gap-3">
-                  Explore All Products
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Button>
+              <div className="relative group/btn cursor-pointer">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full blur opacity-0 group-hover/btn:opacity-40 transition duration-500"></div>
+                <Button className="h-14 px-10 rounded-full bg-[#0a0a0a] hover:bg-white text-white hover:text-black border border-white/10 hover:border-transparent font-medium transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]">
+                  <span className="flex items-center font-display tracking-wide font-bold gap-3">
+                    Explore All Products
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Button>
+              </div>
             </Link>
-          </div>
+          </motion.div>
         </section>
 
         {/* Why Choose Us */}
         <section className="py-32 px-6 max-w-7xl mx-auto relative border-t border-white/[0.05]">
           <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="lg:w-1/2">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:w-1/2"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs tracking-wider uppercase mb-6 font-display font-medium">
+                Our Guarantee
+              </div>
               <h2 className="font-display text-5xl md:text-6xl font-black mb-6 tracking-tight text-white leading-tight">
-                Why Choose Us
+                Why <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-white to-blue-300">Choose Us</span>
               </h2>
-              <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed mb-10">
+              <p className="text-xl md:text-2xl text-zinc-400/90 font-light leading-relaxed mb-10">
                 MTR: Your North-East partner for clean, reliable, and affordable solar energy solutions.
               </p>
 
-              <div className="space-y-8 mt-12">
-                <div className="flex gap-6 group">
-                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:border-blue-500/50 transition-all duration-300">
-                    <Settings className="w-6 h-6" />
+              <div className="space-y-6 mt-12 relative z-10">
+                {[
+                  { icon: <Settings className="w-6 h-6" />, title: "Suitable Solutions", desc: "Our customized solar systems meet your specific energy needs and budget.", color: "blue" },
+                  { icon: <Award className="w-6 h-6" />, title: "High-Quality Product", desc: "We source best products from reputable manufacturers, ensuring optimal performance and longevity.", color: "emerald" },
+                  { icon: <ThumbsUp className="w-6 h-6" />, title: "Professional Installation", desc: "Save big with competitive rates and flexible financing options.", color: "indigo" }
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-6 group p-4 -ml-4 rounded-2xl hover:bg-white/[0.02] border border-transparent hover:border-white/[0.05] transition-all duration-300">
+                    <div className={`shrink-0 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-${item.color}-400 group-hover:bg-${item.color}-500/20 group-hover:border-${item.color}-500/50 group-hover:shadow-[0_0_20px_rgba(var(--${item.color}-500),0.3)] transition-all duration-500 transform -rotate-3 group-hover:rotate-0`}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2 font-display">{item.title}</h3>
+                      <p className="text-zinc-400 leading-relaxed font-light group-hover:text-zinc-300 transition-colors">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2 font-display">Suitable Solutions</h3>
-                    <p className="text-zinc-400 leading-relaxed font-light">
-                      Our customized solar systems meet your specific energy needs and budget.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6 group">
-                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 transition-all duration-300">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2 font-display">High-Quality Product</h3>
-                    <p className="text-zinc-400 leading-relaxed font-light">
-                      We source best products from reputable manufacturers, ensuring optimal performance and longevity.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6 group">
-                  <div className="shrink-0 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-all duration-300">
-                    <ThumbsUp className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2 font-display">Professional Installation</h3>
-                    <p className="text-zinc-400 leading-relaxed font-light">
-                      Save big with competitive rates and flexible financing options
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="lg:w-1/2 w-full">
-              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(59,130,246,0.1)] group">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#030509] via-transparent to-transparent z-10 pointer-events-none"></div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:w-1/2 w-full"
+            >
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset,0_20px_60px_rgba(0,0,0,0.5)] group h-[400px] md:h-[600px] bg-black/50">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-emerald-500/20 mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#030509] via-transparent to-transparent z-10 pointer-events-none opacity-50"></div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/Images/why-choose-us.jpg"
                   alt="Futuristic Solar Installation"
-                  className="w-full h-[400px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -631,32 +674,35 @@ export default function LandingPage() {
 
               <div className="space-y-8">
                 <div className="flex items-center gap-6 group cursor-pointer">
-                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transform -rotate-3 group-hover:rotate-0">
                     <MapPin className="w-6 h-6 text-blue-400" />
                   </div>
                   <div>
                     <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Headquarters</h4>
-                    <p className="text-white font-medium">H.No. 46, Dwarka Nagar, Downtown<br />Guwahati - 06, Assam</p>
+                    <p className="text-white font-medium text-lg">H.No. 46, Dwarka Nagar, Downtown<br />Guwahati - 06, Assam</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6 group cursor-pointer">
-                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500/50 group-hover:bg-cyan-500/10 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transform -rotate-3 group-hover:rotate-0">
                     <MapPin className="w-6 h-6 text-cyan-400" />
                   </div>
                   <div>
-                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Arak Valley Office</h4>
-                    <p className="text-white font-medium">SARAPUR, NEAR GAS AGENCY<br />BHANGA BAZAR, SRIBHUMI</p>
+                    <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Barak Valley Office</h4>
+                    <p className="text-white font-medium text-lg">SARAPUR, NEAR GAS AGENCY<br />BHANGA BAZAR, SRIBHUMI</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6 group cursor-pointer">
-                  <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/10 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transform -rotate-3 group-hover:rotate-0">
                     <Phone className="w-6 h-6 text-emerald-400" />
                   </div>
                   <div>
                     <h4 className="font-display text-zinc-500 text-xs tracking-widest uppercase mb-1 font-medium">Phone Numbers</h4>
-                    <p className="text-white font-medium">+91 8135971360 <br /> +91 6003195639</p>
+                    <p className="text-white font-medium text-lg leading-loose">
+                      <CopyablePhone number="+91 8135971360" /><br />
+                      <CopyablePhone number="+91 6003195639" />
+                    </p>
                   </div>
                 </div>
               </div>
